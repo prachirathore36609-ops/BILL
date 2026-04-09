@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AAVJO Clothing - Bill Generator</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #DCCCAC);
+            text-align: center;
+        }
+
+        .container {
+            width: 500px;
+            background: white;
+            margin: 40px auto;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #c2185b;
+        }
+
+        input, select {
+            padding: 8px;
+            margin: 5px;
+            width: 80%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #c2185b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background: #880e4f;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #c2185b;
+            color: white;
+        }
+
+        td, th {
+            padding: 8px;
+        }
+
+        .total {
+            font-weight: bold;
+            color: green;
+        }
+
+        .discount {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🛍️ AAVJO Clothing</h1>
+    <p>Kurti | Dresses | Tops</p>
+
+    <!-- Input Section -->
+    <input type="text" id="itemName" placeholder="Enter Item Name (Kurti, Dress...)">
+    <input type="number" id="itemPrice" placeholder="Enter Price ₹">
+    
+    <button onclick="addItem()">Add Item</button>
+    <button onclick="generateBill()">Generate Bill</button>
+
+    <!-- Bill Table -->
+    <table id="billTable">
+        <tr>
+            <th>Item</th>
+            <th>Price (₹)</th>
+        </tr>
+    </table>
+
+    <div id="summary"></div>
+</div>
+
+<script>
+    // Arrays to store items and prices
+    let items = [];
+    let prices = [];
+
+    // Function to add item
+    function addItem() {
+        let name = document.getElementById("itemName").value;
+        let price = parseFloat(document.getElementById("itemPrice").value);
+
+        if (name === "" || isNaN(price)) {
+            alert("Please enter valid item details!");
+            return;
+        }
+
+        items.push(name);
+        prices.push(price);
+
+        let table = document.getElementById("billTable");
+        let row = table.insertRow();
+
+        row.insertCell(0).innerHTML = name;
+        row.insertCell(1).innerHTML = "₹" + price;
+
+        // Clear inputs
+        document.getElementById("itemName").value = "";
+        document.getElementById("itemPrice").value = "";
+    }
+
+    // Function to generate bill
+    function generateBill() {
+        let total = 0;
+
+        // Loop through array to calculate total
+        for (let i = 0; i < prices.length; i++) {
+            total += prices[i];
+        }
+
+        let discount = 0;
+
+        // Apply discount condition
+        if (total > 5000) {
+            discount = total * 0.10;
+        }
+
+        let finalAmount = total - discount;
+
+        // Display summary
+        document.getElementById("summary").innerHTML = `
+            <hr>
+            <p>Total: ₹${total}</p>
+            <p class="discount">Discount (10%): ₹${discount}</p>
+            <p class="total">Final Amount: ₹${finalAmount}</p>
+            <hr>
+            <p>✨ Thank you for shopping at AAVJO ✨</p>
+        `;
+    }
+</script>
+
+</body>
+</html>
